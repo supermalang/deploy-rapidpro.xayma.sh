@@ -1,5 +1,3 @@
-# deploy-rapidpro.xayma.sh
-
 Deploy-Rapidpro
 =========
 
@@ -8,7 +6,7 @@ It is intended to be used with the Ansible Tower and the Xayma.sh Platform alrea
 However if you want to use command create and manage odoo instances from the command line, with the Xayma.sh Platform already deployed, you can use the following:
 
 ```bash
-ansible-playbook site.yml -i production --tags "deployrapidpro" --extra-vars "organization=xaymasolutions instancename=rapidpro domain=rapidpro.xaymasolutions.com" --vault-pass-file "vault_password" -K
+ansible-playbook site.yml -i production --tags "deployrapidpro" --extra-vars "organization=xaymasolutions instancename=messageflow domain=messageflow.xaymasolutions.com" --vault-pass-file "vault_password" -K
 ```
 
 > You need to know that when using the CLI way, the instance's addon folder will not be created by default and it might lead to some errors. In that situation you will need to create the addon folder manually.
@@ -48,6 +46,21 @@ You can customize you instance by using thes variables
 Dependencies
 ------------
 All dependencies should be already installed during the deployment of the Xayma.sh platform.
+
+Post installation tasks
+----------------------
+After installation you need to log in to the container hosting the Django App (*ending by _app*) and create a supersuser. Use commands below
+```bash
+docker exec -it xaymasolutions_messageflow_rapidpro7_app bash
+```
+> Please make sure to use the right container name
+
+The once are in your container shell, create the superuser.
+```bash
+/venv/bin/python manage.py createsuperuser
+```
+
+Now use the [Rapidpro documentation](https://rapidpro.github.io/rapidpro/docs/hosting/) to create your Organizations and users, and configure the platform.
 
 License
 -------

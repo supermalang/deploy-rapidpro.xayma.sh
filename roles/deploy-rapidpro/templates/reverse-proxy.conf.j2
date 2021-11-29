@@ -1,7 +1,7 @@
 #jinja2: lstrip_blocks: True
 # Configuring the reverse proxy for the instance {{ instancename }}
 upstream rapidpro_server {
-  server {{ fullinstancename_django|replace('_', '-') }}:8080;
+  server {{ fullinstancename_django }}:8080;
 }
 
 server {

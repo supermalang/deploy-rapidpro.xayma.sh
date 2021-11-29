@@ -1,7 +1,7 @@
 Deploy-Rapidpro
 =========
 
-This role is for deploying and managing a Rapidpro service and all its components (Django App, Celery, Mailroom, Indexer, Courier, Archiver, Redis, Postgres, Elasticsearch) with version 7.0.4 (only supported version for now).
+This Ansible role is for deploying and managing a Rapidpro service and all its components (Django App, Celery, Mailroom, Indexer, Courier, Archiver, Redis, Postgres, Elasticsearch) with version 7.0.4 (only supported version for now).
 It is intended to be used with the Ansible Tower and the Xayma.sh Platform already deployed (with all it's components).  
 However if you want to use command create and manage odoo instances from the command line, with the Xayma.sh Platform already deployed, you can use the following:
 

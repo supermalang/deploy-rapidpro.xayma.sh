@@ -1,0 +1,15 @@
+---
+- name: Stopping Rapidpro Service
+  docker_compose:
+    project_src: "{{ xayma_rapidpro_paths.service }}"
+    state: absent
+  when: instancename != xayma_rapidpro.instancename # We make sure the user has provided an instance name
+
+
+- name: Updating the Nginx vHost file
+  template:
+    src: reverse-proxy-stop-service.conf.j2
+    dest: "{{ nginx_config_volume_path }}/{{ fullinstancename }}.conf"
+    mode: '0644'
+  notify:
+      - reload_nginx_service

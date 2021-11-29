@@ -1,0 +1,28 @@
+---
+# vars file for deploy-rapidpro
+---
+
+organization: "{{ xayma_rapidpro.organization }}"
+instancename: "{{ xayma_rapidpro.instancename }}"
+version: "{{ xayma_rapidpro.version }}"
+domain: "{{ instancename }}"
+_name: "{{ xayma_rapidpro.name }}"
+fullinstancename: "{{organization}}_{{instancename}}_rapidpro{{version|default(xayma_rapidpro.version)|int}}"
+fullinstancename_django: "{{fullinstancename}}_app"
+fullinstancename_celery: "{{fullinstancename}}_celery"
+fullinstancename_mailroom: "{{fullinstancename}}_mailroom"
+fullinstancename_indexer: "{{fullinstancename}}_indexer"
+fullinstancename_archiver: "{{fullinstancename}}_archiver"
+fullinstancename_db: "{{fullinstancename}}_postgres"
+fullinstancename_elasticsearch: "{{fullinstancename}}_elasticsearch"
+fullinstancename_redis: "{{fullinstancename}}_redis"
+defaultdomain: "{{platform_domain}}"
+
+domains:
+    - "{{ domain }}"
+    - "{{instancename}}.{{ defaultdomain }}"
+
+xayma_rapidpro_paths:
+    service: "{{services_path}}/{{organization}}/{{instancename}}_rapidpro{{version|int}}"
+    config: "{{services_path}}/{{organization}}/{{instancename}}_rapidpro{{version|int}}/config"
+    logs: "{{services_path}}/{{organization}}/{{instancename}}_rapidpro{{version|int}}/logs"

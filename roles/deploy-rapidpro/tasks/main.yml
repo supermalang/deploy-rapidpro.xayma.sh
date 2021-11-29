@@ -1,0 +1,20 @@
+---
+# tasks file for deploy-rapidpro
+
+- import_tasks: 0-register-platform-defaults.yml
+  tags: deployrapidpro, stopservice, restartservice, suspendservice, startservice, editservicedomainname
+
+- import_tasks: deploy-rapidpro.yml
+  tags: deployrapidpro
+
+- import_tasks: add-vhost.yml
+  tags: deployrapidpro
+
+- import_tasks: stop-service.yml
+  tags: stopservice, restartservice, suspendservice
+
+- import_tasks: start-service.yml
+  tags: startservice, restartservice
+
+- import_tasks: edit-service-domainname.yml
+  tags: editservicedomainname

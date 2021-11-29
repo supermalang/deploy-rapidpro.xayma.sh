@@ -1,0 +1,18 @@
+#jinja2: lstrip_blocks: True
+  
+# Stopping service {{ instancename }}
+
+server {
+    listen 80;
+    server_name {{ domains|join(' ') }};
+    root    /var/www/html/;
+
+    location / {
+        return 503;
+    }
+
+    error_page 503 @stop;
+    location @stop {
+        rewrite ^(.*)$ /stopped.html break;
+    }
+}

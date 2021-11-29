@@ -1,0 +1,59 @@
+---
+
+- name: Creating the Rapidpro service directory
+  file:
+    path: "{{ xayma_rapidpro_paths.service }}"
+    state: directory
+    mode: '0755'
+
+- name: Creating the Rapidpro logs directory
+  file:
+    path: "{{ xayma_rapidpro_paths.logs }}"
+    state: directory
+    mode: '0755'
+
+- name: Creating Docker compose file
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ xayma_rapidpro_paths.service }}/docker-compose.yml"
+    mode: '0644'
+
+- name: Creating archiver env file
+  template:
+    src: rapidpro-archiver.env.j2
+    dest: "{{ xayma_rapidpro_paths.service }}/rapidpro-archiver.env"
+    mode: '0644'
+
+- name: Creating celery env file
+  template:
+    src: rapidpro-celery.env.j2
+    dest: "{{ xayma_rapidpro_paths.service }}/rapidpro-celery.env"
+    mode: '0644'
+
+- name: Creating courier env file
+  template:
+    src: rapidpro-courier.env.j2
+    dest: "{{ xayma_rapidpro_paths.service }}/rapidpro-courier.env"
+    mode: '0644'
+
+- name: Creating django env file
+  template:
+    src: rapidpro-django.env.j2
+    dest: "{{ xayma_rapidpro_paths.service }}/rapidpro-django.env"
+    mode: '0644'
+
+- name: Creating indexer env file
+  template:
+    src: rapidpro-indexer.env.j2
+    dest: "{{ xayma_rapidpro_paths.service }}/rapidpro-indexer.env"
+    mode: '0644'
+
+- name: Creating mailroom env file
+  template:
+    src: rapidpro-mailroom.env.j2
+    dest: "{{ xayma_rapidpro_paths.service }}/rapidpro-mailroom.env"
+    mode: '0644'
+
+- name: Deploying the Rapidpro Service
+  docker_compose:
+    project_src: "{{ xayma_rapidpro_paths.service }}"

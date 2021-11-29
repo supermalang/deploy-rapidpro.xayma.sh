@@ -1,0 +1,131 @@
+#jinja2: lstrip_blocks: True
+version: '3'
+services:
+  rapidprodjango:
+    image: {{_name}}:v{{xayma_rapidpro.version}}
+    container_name: {{fullinstancename_django}}
+    env_file:
+      - rapidpro-django.env
+    restart: unless-stopped
+    depends_on:
+      - redis
+      - postgresdb
+    networks:
+      - frontend
+      - default
+    volumes:
+      - {{ addons_volume }}:/etc/nginx/conf.d
+      - {{ xayma_rapidpro_paths.config }}:/etc/nginx/conf.d
+      - {{ xayma_rapidpro_paths.logs }}:/var/log/nginx
+
+
+  rapidprocelery:
+    image: {{_name}}:v{{xayma_rapidpro.version}}
+    container_name: {{fullinstancename_celery}}
+    depends_on:
+      - rapidprodjango
+      - es01
+    env_file:
+     - rapidpro-celery.env
+    restart: unless-stopped
+    command: ["/venv/bin/celery", "--app=temba", "worker", "--beat", "--loglevel=INFO", "--queues=celery,msgs,flows,handler"]
+    networks:
+      - default
+    
+
+  rapidprocourier:
+   image: {{_name}}-courier:v{{xayma_rapidpro.courierversion}}
+   container_name: {{fullinstancename_courier}}
+   depends_on:
+     - rapidprodjango
+     - es01
+   env_file:
+     - rapidpro-courier.env
+   restart: unless-stopped
+   networks:
+      - default
+
+  rapidpromailroom:
+   image: {{_name}}-mailroom:v{{xayma_rapidpro.mailroomversion}}
+   container_name: {{fullinstancename_mailroom}}
+   depends_on:
+     - rapidprodjango
+     - es01
+     - redis
+   env_file:
+     - rapidpro-mailroom.env
+   restart: unless-stopped
+   networks:
+      - default
+
+  rapidproindexer:
+   image: {{_name}}-indexer:v{{xayma_rapidpro.indexerversion}}
+   container_name: {{fullinstancename_indexer}}
+   depends_on:
+     - postgresdb
+     - es01
+     - redis
+   env_file:
+     - rapidpro-indexer.env
+   restart: unless-stopped
+   networks:
+      - default
+
+  rapidproarchiver:
+   image: {{_name}}-archiver:v{{xayma_rapidpro.archiverversion}}
+   container_name: {{fullinstancename_archiver}}
+   depends_on:
+     - rapidprodjango
+   env_file:
+     - rapidpro-archiver.env
+   restart: unless-stopped
+   networks:
+      - default
+
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
+    container_name: {{fullinstancename_elasticsearch}}
+    environment:
+      - discovery.type=single-node
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    restart: unless-stopped
+    networks:
+      - default
+    
+  postgresdb:
+    image: postgis/postgis:10-2.5
+    container_name: {{fullinstancename_db}}
+    environment:
+      - POSTGRES_DB={{ credentials.postgres_dbname }}
+      - POSTGRES_PASSWORD={{ credentials.postgres_password }}
+      - POSTGRES_USER={{ credentials.postgres_user }}
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - pgdata:/var/lib/postgresql/data/pgdata
+    restart: unless-stopped
+    networks:
+      - default
+
+  redis:
+    image: redis:alpine
+    container_name: {{fullinstancename_redis}}
+    networks:
+    - default
+
+
+networks:
+  frontend:
+    external:
+      name: {{ front_network }}
+
+volumes:
+  pgdata:
+  esdata:
+    driver: local
+  {{ addons_volume }}:
+    external: true

@@ -1,0 +1,11 @@
+---
+    
+xayma_rapidpro:
+    name: "supermalang/rapidpro"
+    organization: "xayma"
+    instancename: "xayma_rapidpro"
+    version: "7.0.4"
+    mailroomversion: "7.0.1"
+    courierversion: "7.0.0"
+    indexerversion: "7.0.0"
+    archiverversion: "7.0.0"

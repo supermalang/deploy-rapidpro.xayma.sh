@@ -1,0 +1,76 @@
+
+#jinja2: lstrip_blocks: True
+
+upstream rapidpro_server {
+  server {{fullinstancename_django}}:8000;
+}
+
+upstream courier_server {
+  server {{fullinstancename_courier}}:8080 fail_timeout=60;
+}
+
+upstream mailroom_server {
+  server {{fullinstancename_mailroom}}:8090 fail_timeout=60;
+}
+
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server ipv6only=on;
+    server_name localhost {{ domains|join(' ') }} ;
+    client_max_body_size 500M;
+    location = /favicon.ico { access_log off; log_not_found off; }
+    access_log /var/log/nginx/rapidpro.access.log;
+    error_log /var/log/nginx/rapidpro.error.log;
+
+    location ~ /.well-known {
+                allow all;
+    }
+
+    location /robots.txt {
+        return 200 "User-agent: *\nDisallow: /";
+    }
+
+    location /media {
+        autoindex on;
+        root /rapidpro/;
+        }
+
+    location /sitestatic {
+        autoindex on;
+        root /rapidpro/;
+    }
+
+    # all Mailroom URLs go to Mailroom
+    location ^~ /mr/ {
+        proxy_set_header Host $http_host;
+        proxy_pass http://mailroom_server;
+        break;
+    }
+
+    # all courier URLs go to courier
+    location ^~ /c/ {
+        proxy_set_header Host $http_host;
+        proxy_pass http://courier_server;
+        break;
+    }
+
+    location / {
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+
+        if (!-f $request_filename) {
+            proxy_pass http://rapidpro_server;
+            break;
+        }
+   }
+
+
+    #listen [::]:443 ssl ipv6only=on; # managed by Certbot
+    #listen 443 ssl; # managed by Certbot
+    #ssl_certificate /etc/letsencrypt/live/subdomain.domain.com/fullchain.pem; # managed by Certbot
+    #ssl_certificate_key /etc/letsencrypt/live/subdomain.domain.com/privkey.pem; # managed by Certbot
+    #include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    #ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}

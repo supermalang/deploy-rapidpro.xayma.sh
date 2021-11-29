@@ -1,6 +1,5 @@
 ---
 # vars file for deploy-rapidpro
----
 
 organization: "{{ xayma_rapidpro.organization }}"
 instancename: "{{ xayma_rapidpro.instancename }}"

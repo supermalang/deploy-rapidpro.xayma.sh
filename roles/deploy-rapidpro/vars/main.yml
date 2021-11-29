@@ -24,6 +24,6 @@ domains:
     - "{{instancename}}.{{ defaultdomain }}"
 
 xayma_rapidpro_paths:
-    service: "{{services_path}}/{{organization}}/{{instancename}}_rapidpro{{version|int}}"
-    config: "{{services_path}}/{{organization}}/{{instancename}}_rapidpro{{version|int}}/config"
-    logs: "{{services_path}}/{{organization}}/{{instancename}}_rapidpro{{version|int}}/logs"
+    service: "{{services_path}}/{{organization}}/{{instancename}}_rapidpro7"
+    config: "{{services_path}}/{{organization}}/{{instancename}}_rapidpro7/config"
+    logs: "{{services_path}}/{{organization}}/{{instancename}}_rapidpro7/logs"

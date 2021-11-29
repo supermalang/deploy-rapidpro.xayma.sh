@@ -1,6 +1,5 @@
 
 #jinja2: lstrip_blocks: True
-
 upstream rapidpro_server {
   server {{fullinstancename_django}}:8000;
 }
@@ -14,7 +13,7 @@ upstream mailroom_server {
 }
 
 server {
-    listen 80 default_server;
+    listen 80 ;
     listen [::]:80 default_server ipv6only=on;
     server_name localhost {{ domains|join(' ') }} ;
     client_max_body_size 500M;

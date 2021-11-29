@@ -14,7 +14,6 @@ services:
       - frontend
       - default
     volumes:
-      #- {{ addons_volume }}:/etc/nginx/conf.d
       - {{ xayma_rapidpro_paths.config }}:/etc/nginx/conf.d
       - {{ xayma_rapidpro_paths.logs }}:/var/log/nginx
 

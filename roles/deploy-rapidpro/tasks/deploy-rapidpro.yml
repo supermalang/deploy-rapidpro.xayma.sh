@@ -54,6 +54,12 @@
     dest: "{{ xayma_rapidpro_paths.service }}/rapidpro-mailroom.env"
     mode: '0644'
 
+- name: Creating internal rapidpro nginx config file
+  template:
+    src: rapidpro-internal-config.nginx.conf.j2
+    dest: "{{ xayma_rapidpro_paths.config }}/rapidpro-internal-config.nginx.conf"
+    mode: '0644'
+
 - name: Deploying the Rapidpro Service
   docker_compose:
     project_src: "{{ xayma_rapidpro_paths.service }}"

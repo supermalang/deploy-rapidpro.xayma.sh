@@ -12,6 +12,12 @@
     state: directory
     mode: '0755'
 
+- name: Creating the Rapidpro config directory
+  file:
+    path: "{{ xayma_rapidpro_paths.config }}"
+    state: directory
+    mode: '0755'
+
 - name: Creating Docker compose file
   template:
     src: docker-compose.yml.j2

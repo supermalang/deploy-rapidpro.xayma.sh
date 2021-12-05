@@ -25,5 +25,11 @@ domains:
 
 xayma_rapidpro_paths:
     service: "{{services_path}}/{{organization}}/{{instancename}}_rapidpro7"
-    config: "{{services_path}}/{{organization}}/{{instancename}}_rapidpro7/config"
-    logs: "{{services_path}}/{{organization}}/{{instancename}}_rapidpro7/logs"
+    nginx: "{{services_path}}/{{organization}}/{{instancename}}_rapidpro7/nginx"
+    nginx_conf: "{{services_path}}/{{organization}}/{{instancename}}_rapidpro7/nginx/conf.d"
+    nginx_snippets: "{{services_path}}/{{organization}}/{{instancename}}_rapidpro7/nginx/snippets"
+    nginx_logs: "{{services_path}}/{{organization}}/{{instancename}}_rapidpro7/nginx/logs"
+    ssl: "{{services_path}}/{{organization}}/{{instancename}}_rapidpro7/ssl"
+    ssl_certs: "{{services_path}}/{{organization}}/{{instancename}}_rapidpro7/ssl/certs"
+    ssl_private: "{{services_path}}/{{organization}}/{{instancename}}_rapidpro7/ssl/private"
+    temba: "{{services_path}}/{{organization}}/{{instancename}}_rapidpro7/temba"

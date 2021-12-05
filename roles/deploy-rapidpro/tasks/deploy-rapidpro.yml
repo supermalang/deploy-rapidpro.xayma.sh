@@ -1,4 +1,14 @@
 ---
+# ------ This task deploys the rapidpro service, assuming it is behind a Traefik proxy and self-generated SSL certificates will be used
+# ------ for internal rapidpro proxy forwarding.
+# ------ The service will be deployed using the steps below:
+# 1. Create necessary directories 
+# 2. Create the Docker-compose file
+# 3. Create environment variables file
+# 4. Creeate the temba settings file, nginx config file
+# 5. Create SSL certificatee and keys
+# 6. Create nginx snippets to use
+# 7. Execute the docker compose file to deploy containers
 
 - name: Creating the Rapidpro service directory
   file:
@@ -6,15 +16,39 @@
     state: directory
     mode: '0755'
 
-- name: Creating the Rapidpro logs directory
+- name: Creating the nginx logs directory
   file:
-    path: "{{ xayma_rapidpro_paths.logs }}"
+    path: "{{ xayma_rapidpro_paths.nginx_logs }}"
     state: directory
     mode: '0755'
 
-- name: Creating the Rapidpro config directory
+- name: Creating the Rapidpro nginx config directory
   file:
-    path: "{{ xayma_rapidpro_paths.config }}"
+    path: "{{ xayma_rapidpro_paths.nginx_conf }}"
+    state: directory
+    mode: '0755'
+
+- name: Creating the Rapidpro nginx snippets directory
+  file:
+    path: "{{ xayma_rapidpro_paths.nginx_snippets }}"
+    state: directory
+    mode: '0755'
+
+- name: Creating the Rapidpro SSL Private directory
+  file:
+    path: "{{ xayma_rapidpro_paths.ssl_private }}"
+    state: directory
+    mode: '0755'
+
+- name: Creating the Rapidpro SSL Certs directory
+  file:
+    path: "{{ xayma_rapidpro_paths.ssl_certs }}"
+    state: directory
+    mode: '0755'
+
+- name: Creating the Rapidpro Temba directory
+  file:
+    path: "{{ xayma_rapidpro_paths.temba }}"
     state: directory
     mode: '0755'
 
@@ -60,12 +94,43 @@
     dest: "{{ xayma_rapidpro_paths.service }}/rapidpro-mailroom.env"
     mode: '0644'
 
+- name: Creating settings file
+  template:
+    src: settings.py.j2
+    dest: "{{ xayma_rapidpro_paths.temba }}/settings.py"
+    mode: '0644'
+
 - name: Creating internal rapidpro nginx config file
   template:
     src: rapidpro-internal-config.nginx.conf.j2
-    dest: "{{ xayma_rapidpro_paths.config }}/rapidpro-internal-config.nginx.conf"
+    dest: "{{ xayma_rapidpro_paths.nginx_conf }}/rapidpro-internal-config.nginx.conf"
     mode: '0644'
+
+- name: Generate a Self Signed OpenSSL certificate
+  community.crypto.x509_certificate:
+    path: "{{ xayma_rapidpro_paths.ssl_certs }}/nginx-selfsigned.crt"
+    privatekey_path: "{{ xayma_rapidpro_paths.ssl_private }}/nginx-selfsigned.key"
+    #csr_path: "{{ xayma_rapidpro_paths }}"
+    provider: selfsigned
+
+- name: Generates DH Parameters with a size of 2048 bits  
+  community.crypto.openssl_dhparam:
+    path: "{{ xayma_rapidpro_paths.ssl_certs }}/dhparam.pem"
+    size: 2048
+
+- name: Copy nginx snippets files (automatically from the files folder)
+  copy:
+    src: "{{item}}"
+    dest: "{{ nginx_snippets.nginx_snippets }}"
+    mode: 0644
+  loop:
+    - self-signed.conf
+    - ssl-params.conf
 
 - name: Deploying the Rapidpro Service
   docker_compose:
     project_src: "{{ xayma_rapidpro_paths.service }}"
+
+# TODO
+# - [ ] Add possibility to send email with details to the customer or some given user
+# - [ ] Check which Reverse-proxy/ssl generator should be used by default and adapt accordingly (Traefik, Letsencrypt, Nginx Ingress, etc)

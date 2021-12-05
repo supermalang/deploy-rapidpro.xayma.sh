@@ -1,4 +1,7 @@
 ---
+## Deprecated for now
+## Using Traefik
+## We will see if we are going to enable it again
 - name: Starting Rapidpro Serice
   docker_compose:
     project_src: "{{ xayma_rapidpro_paths.service }}"

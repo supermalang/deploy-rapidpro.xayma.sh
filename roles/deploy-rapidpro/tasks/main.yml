@@ -7,14 +7,15 @@
 - import_tasks: deploy-rapidpro.yml
   tags: deployrapidpro
 
-- import_tasks: add-vhost.yml
-  tags: deployrapidpro
+# Deprecated
+#- import_tasks: add-vhost.yml
+#  tags: deployrapidpro
 
-- import_tasks: stop-service.yml
-  tags: stopservice, restartservice, suspendservice
-
-- import_tasks: start-service.yml
-  tags: startservice, restartservice
+# - import_tasks: stop-service.yml
+#   tags: stopservice, restartservice, suspendservice
+# 
+# - import_tasks: start-service.yml
+#   tags: startservice, restartservice
 
 - import_tasks: edit-service-domainname.yml
   tags: editservicedomainname

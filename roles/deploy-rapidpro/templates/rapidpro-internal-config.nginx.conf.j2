@@ -1,15 +1,15 @@
 
 #jinja2: lstrip_blocks: True
 upstream rapidpro_server {
-  server {{fullinstancename_django}}:8000;
+    server {{fullinstancename_django}}:8000;
 }
 
 upstream courier_server {
-  server {{fullinstancename_courier}}:8080 fail_timeout=60;
+    server {{fullinstancename_courier}}:8080 fail_timeout=60;
 }
 
 upstream mailroom_server {
-  server {{fullinstancename_mailroom}}:8090 fail_timeout=60;
+    server {{fullinstancename_mailroom}}:8090 fail_timeout=60;
 }
 
 server {
@@ -32,7 +32,7 @@ server {
     location /media {
         autoindex on;
         root /rapidpro/;
-        }
+    }
 
     location /sitestatic {
         autoindex on;
@@ -62,14 +62,9 @@ server {
             proxy_pass http://rapidpro_server;
             break;
         }
-   }
+    }
 
-
-    #listen [::]:443 ssl ipv6only=on; # managed by Certbot
-    #listen 443 ssl; # managed by Certbot
-    #ssl_certificate /etc/letsencrypt/live/subdomain.domain.com/fullchain.pem; # managed by Certbot
-    #ssl_certificate_key /etc/letsencrypt/live/subdomain.domain.com/privkey.pem; # managed by Certbot
-    #include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
-    #ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
-
+    listen 443 ssl http2;
+    include snippets/self-signed.conf;
+    include snippets/ssl-params.conf;
 }

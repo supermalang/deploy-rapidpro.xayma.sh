@@ -1,4 +1,7 @@
 ---
+## Deprecated for now
+## Using Traefik
+## We will see if we are going to enable it again
 - name: Updating the Nginx vHost file
   template:
     src: reverse-proxy.conf.j2

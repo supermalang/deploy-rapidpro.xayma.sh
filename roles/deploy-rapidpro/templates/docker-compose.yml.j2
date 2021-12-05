@@ -15,19 +15,19 @@ services:
       - default
     volumes:
       - {{ xayma_rapidpro_paths.nginx_conf }}:/etc/nginx/conf.d
-      - {{ xayma_rapidpro_paths.nginx_logs }}:/var/log/nginx
       - {{ xayma_rapidpro_paths.nginx_snippets }}:/etc/nginx/snippets
+      - {{ xayma_rapidpro_paths.nginx_logs }}:/var/log/nginx
       - {{ xayma_rapidpro_paths.ssl_certs }}:/etc/ssl/certs/
       - {{ xayma_rapidpro_paths.ssl_private }}:/etc/ssl/private/
       - {{ xayma_rapidpro_paths.temba }}/settings.py:/rapidpro/temba/settings.py
     labels:
-        - traefik.enable=true
-        - traefik.http.routers.{{fullinstancename}}.rule=Host(`{{ domains|first }}`)
-        - traefik.http.routers.{{fullinstancename}}.entrypoints=web, websecure
-        - traefik.http.routers.{{fullinstancename}}.tls=true
-        - traefik.http.routers.{{fullinstancename}}.tls.certresolver=production
-        - traefik.docker.network={{ front_network }}
-        - traefik.http.services.{{fullinstancename}}.loadbalancer.server.port=80
+      - traefik.enable=true
+      - traefik.http.routers.{{fullinstancename}}.rule=Host(`{{ domains|first }}`)
+      - traefik.http.routers.{{fullinstancename}}.entrypoints=web, websecure
+      - traefik.http.routers.{{fullinstancename}}.tls=true
+      - traefik.http.routers.{{fullinstancename}}.tls.certresolver=production
+      - traefik.docker.network={{ front_network }}
+      - traefik.http.services.{{fullinstancename}}.loadbalancer.server.port=80
 
 
   rapidprocelery:

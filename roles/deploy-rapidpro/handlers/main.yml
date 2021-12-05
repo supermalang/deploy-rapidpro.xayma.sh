@@ -2,3 +2,4 @@
 # handlers file for deploy-rapidpro
 - name: reload_nginx_service
   shell: docker container exec {{ nginx_container_name | quote }} nginx -s reload
+  when: preferred_reverse_proxy == "nginx"  # Make sure this is executed only when we use nginx as the preferred reverse proxy

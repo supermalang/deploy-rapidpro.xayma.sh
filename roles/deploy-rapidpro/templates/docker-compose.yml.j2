@@ -20,6 +20,7 @@ services:
       - {{ xayma_rapidpro_paths.ssl_certs }}:/etc/ssl/certs/
       - {{ xayma_rapidpro_paths.ssl_private }}:/etc/ssl/private/
       - {{ xayma_rapidpro_paths.temba }}/settings.py:/rapidpro/temba/settings.py
+    {% if preferred_reverse_proxy == "traefik" -%}
     labels:
       - traefik.enable=true
       - traefik.http.routers.{{fullinstancename}}.rule=Host(`{{ domains|first }}`)
@@ -28,6 +29,7 @@ services:
       - traefik.http.routers.{{fullinstancename}}.tls.certresolver=production
       - traefik.docker.network={{ front_network }}
       - traefik.http.services.{{fullinstancename}}.loadbalancer.server.port=80
+    {% endif %}
 
 
   rapidprocelery:

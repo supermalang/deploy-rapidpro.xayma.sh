@@ -1,11 +1,12 @@
 ---
-## Deprecated for now
-## Using Traefik
-## We will see if we are going to enable it again
 - name: Creating vHost file
   template:
     src: reverse-proxy.conf.j2
     dest: "{{ nginx_config_volume_path }}/{{ fullinstancename }}.conf"
     mode: '0644'
   notify:
-      - reload_nginx_service
+    - reload_nginx_service
+  when: preferred_reverse_proxy == "nginx"
+
+
+# When preferred_reverse_proxy == "trefik" we use the container labels

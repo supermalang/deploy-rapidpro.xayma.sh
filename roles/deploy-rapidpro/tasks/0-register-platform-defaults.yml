@@ -31,37 +31,14 @@
 - set_fact:
     preferred_reverse_proxy: "{{ _preferred_reverse_proxy.stdout }}"
 
-# In case our platform is using nginx as reverse proxy
 - name: Registering the nginx container name
   shell: "grep nginx_container_name /opt/xayma-platform-defaults.yml | cut -d ':' -f2 | awk '{$1=$1};1'"
   register: _nginx_container_name
-  when: preferred_reverse_proxy == "nginx"
 - set_fact:
     nginx_container_name: "{{ _nginx_container_name.stdout }}"
-    when: preferred_reverse_proxy == "nginx"
 
 - name: Registering the nginx config volume path
   shell: "grep nginx_config_volume_path /opt/xayma-platform-defaults.yml | cut -d ':' -f2 | awk '{$1=$1};1'"
   register: _nginx_config_volume_path
-  when: preferred_reverse_proxy == "nginx"
 - set_fact:
     nginx_config_volume_path: "{{ _nginx_config_volume_path.stdout }}"
-    when: preferred_reverse_proxy == "nginx"
-
-
-# In case our platform is using traefik as reverse proxy / load balancer
-- name: Registering the traefik container name
-  shell: "grep traefik_container_name /opt/xayma-platform-defaults.yml | cut -d ':' -f2 | awk '{$1=$1};1'"
-  register: _traefik_container_name
-  when: preferred_reverse_proxy == "traefik"
-- set_fact:
-    traefik_container_name: "{{ _traefik_container_name.stdout }}"
-    when: preferred_reverse_proxy == "traefik"
-
-- name: Registering the traefik config volume path
-  shell: "grep traefik_config_volume_path /opt/xayma-platform-defaults.yml | cut -d ':' -f2 | awk '{$1=$1};1'"
-  register: _traefik_config_volume_path
-  when: preferred_reverse_proxy == "traefik"
-- set_fact:
-    traefik_config_volume_path: "{{ _traefik_config_volume_path.stdout }}"  
-    when: preferred_reverse_proxy == "traefik"

@@ -6,7 +6,4 @@
     mode: '0644'
   notify:
     - reload_nginx_service
-  when: preferred_reverse_proxy == "nginx"
-
-
-# When preferred_reverse_proxy == "trefik" we use the container labels
+    

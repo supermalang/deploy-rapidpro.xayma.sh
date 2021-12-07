@@ -6,7 +6,7 @@ It is intended to be used with the Ansible Tower and the Xayma.sh Platform alrea
 However if you want to use command create and manage odoo instances from the command line, with the Xayma.sh Platform already deployed, you can use the following:
 
 ```bash
-ansible-playbook site.yml -i production --tags "deployrapidpro" --extra-vars "organization=xaymasolutions instancename=messageflow domain=messageflow.xaymasolutions.com" --vault-pass-file "vault_password" -K
+ansible-playbook site.yml -i production --tags "deployrapidpro" --extra-vars "organization=xaymalabs instancename=messageflow domain=messageflow.xaymalabs.com" --vault-pass-file "vault_password" -K
 ```
 
 > You need to know that when using the CLI way, the instance's addon folder will not be created by default and it might lead to some errors. In that situation you will need to create the addon folder manually.
@@ -51,7 +51,7 @@ Post installation tasks
 ----------------------
 After installation you need to log in to the container hosting the Django App (*ending by _app*) and create a supersuser. Use commands below
 ```bash
-docker exec -it xaymasolutions_messageflow_rapidpro7_app bash
+docker exec -it xaymalabs_rapidpro7_app bash
 ```
 > Please make sure to use the right container name
 

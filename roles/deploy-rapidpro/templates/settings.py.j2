@@ -42,7 +42,7 @@ if TESTING:
     PASSWORD_HASHERS = ("django.contrib.auth.hashers.MD5PasswordHasher",)
     DEBUG = False
 
-ADMINS = (("RapidPro", "code@yourdomain.io"),)
+ADMINS = (("Rapidpro", "no-reply@visimax.sn"),)
 MANAGERS = ADMINS
 
 # -----------------------------------------------------------------------------------
@@ -55,18 +55,19 @@ POSTGIS_VERSION = (2, 1)
 
 # -----------------------------------------------------------------------------------
 # set the mail settings, override these in your settings.py
-# if your site was at http://temba.io, it might look like this:
+# if your site was at http://visimax.sn, it might look like this:
 # -----------------------------------------------------------------------------------
 EMAIL_HOST = "smtp.gmail.com"
-EMAIL_HOST_USER = "server@temba.io"
-DEFAULT_FROM_EMAIL = "server@temba.io"
+EMAIL_HOST_USER = "server@visimax.sn"
 EMAIL_HOST_PASSWORD = "mypassword"
+DEFAULT_FROM_EMAIL = "server@visimax.sn"
+EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_TIMEOUT = 10
 
 # Used when sending email from within a flow and the user hasn't configured
 # their own SMTP server.
-FLOW_FROM_EMAIL = "Visimax <no-reply@temba.io>"
+FLOW_FROM_EMAIL = "Visimax <no-reply@visimax.sn>"
 
 # HTTP Headers using for outgoing requests to other services
 OUTGOING_REQUEST_HEADERS = {"User-agent": "Visimax RapidPro"}
@@ -352,7 +353,7 @@ BRANDING = {
         "welcome_packs": [dict(size=200, name="Demo Account"), dict(size=10000, name="SMB Account")],
         "title": _("Visually build highly scalable mobile applications"),
         "description": _("Visually build nationally scalable mobile applications from anywhere in the world."),
-        "credits": _("Customized Rapidpro service by Visimax." ),
+        "credits": _("Customized Rapidpro service provided by Visimax." ),
     }
 }
 DEFAULT_BRAND = os.environ.get("DEFAULT_BRAND", "rapidpro.io")

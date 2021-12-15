@@ -33,3 +33,4 @@ xayma_rapidpro_paths:
     ssl_certs: "{{services_path}}/{{organization}}/{{instancename}}_rapidpro7/ssl/certs"
     ssl_private: "{{services_path}}/{{organization}}/{{instancename}}_rapidpro7/ssl/private"
     temba: "{{services_path}}/{{organization}}/{{instancename}}_rapidpro7/temba"
+    media: "{{services_path}}/{{organization}}/{{instancename}}_rapidpro7/media"

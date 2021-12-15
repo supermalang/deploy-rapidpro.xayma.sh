@@ -52,6 +52,30 @@
     state: directory
     mode: '0755'
 
+- name: Creating the Rapidpro Media directory
+  file:
+    path: "{{ xayma_rapidpro_paths.media }}"
+    state: directory
+    mode: '0755'
+
+- name: Creating the Rapidpro media/attachments directory
+  file:
+    path: "{{ xayma_rapidpro_paths.media }}/attachments"
+    state: directory
+    mode: '0755'
+
+- name: Creating the Rapidpro media/contact_imports directory
+  file:
+    path: "{{ xayma_rapidpro_paths.media }}/contact_imports"
+    state: directory
+    mode: '0755'
+
+- name: Creating the Rapidpro media/orgs directory
+  file:
+    path: "{{ xayma_rapidpro_paths.media }}/orgs"
+    state: directory
+    mode: '0755'
+
 - name: Creating Docker compose file
   template:
     src: docker-compose.yml.j2
